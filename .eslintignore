@@ -1,0 +1,3 @@
+dist/*.js
+assets/*.js
+test/**/*.js

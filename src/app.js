@@ -5,24 +5,25 @@ import koaLogger from 'koa-logger'
 import koaJwt from 'koa-jwt'
 import koaBody from 'koa-body'
 import path from 'path'
-import errorHandler from './middleware/errorHandler'
-import apoRoutes from './routes/api'
-import adminRoutes from './routes/admin'
+import config from './config'
+import success from './middleware/success'
+import onException from './middleware/onException'
+import apiRoutes from './routes/api'
+import platformRoutes from './routes/platform'
 
 const app = new Koa2()
 
 const env = process.env.NODE_ENV || 'development'
 
-const jwtKey = 'shared-secret'
-
 // error handler
 koaOnerror(app)
 
 app
-  .use(errorHandler())
+  .use(success())
+  .use(onException())
   .use(koaLogger())
   .use(koaStatic('assets', path.resolve(__dirname, '../assets'))) // Static resource
-  .use(koaJwt({ secret: jwtKey }).unless({ path: [/^\/api|^\/assets/] }))
+  .use(koaJwt({ secret: config.security.secretKey }).unless({ path: [/^\/api|^\/assets|^\/platform\/register/] }))
   .use(koaBody({
     multipart: true,
     // parse GET, HEAD, DELETE requests
@@ -35,10 +36,11 @@ app
     textLimit: '10mb'
   }))
   // Processing request
-  .use(apoRoutes.routes(), apoRoutes.allowedMethods())
-  .use(adminRoutes.routes(), apoRoutes.allowedMethods())
+  .use(apiRoutes.routes(), apiRoutes.allowedMethods())
+  .use(platformRoutes.routes(), platformRoutes.allowedMethods())
 
-if (env === 'development') { // logger
+if (env === 'development') {
+  // logger
   app.use(async (ctx, next) => {
     const start = new Date()
     await next()
@@ -47,8 +49,8 @@ if (env === 'development') { // logger
   })
 }
 
-app.listen('5200')
+app.listen(config.server.port)
 
-console.log('Now start API server on port 5200 ...')
+console.log(`Now start API server on port ${config.server.port} ...`)
 
 export default app

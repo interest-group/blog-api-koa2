@@ -7,7 +7,7 @@ export default {
     port: 3306,
     database: 'blog',
     username: 'root',
-    password: 'root'
+    password: ''
   },
   security: {
     secretKey: 'secretKey',

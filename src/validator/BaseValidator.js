@@ -4,11 +4,15 @@ export default class BaseValidator {
     this.ctx = ctx
   }
 
-  async validator (schema) {
+  validator (schema) {
     const inputs = this.ctx.request.body
     const { value, error } = schema.validate(inputs)
     if (error) {
-      throw new Exception(error.message, 415)
+      throw new Exception({
+        status: 415,
+        data: null,
+        message: error.message
+      })
     }
     return value
   }

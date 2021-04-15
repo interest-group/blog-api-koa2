@@ -1,3 +1,3 @@
-const requireDirectory = require('require-directory')
+import UserController from './UserController'
 
-export default requireDirectory(module)
+export default { UserController }

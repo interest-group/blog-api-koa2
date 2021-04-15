@@ -1,7 +1,11 @@
+import { getValue } from '../utils/tools'
+
 export default class Exception extends Error {
-  constructor (message, status) {
+  constructor ({ status, data, message }) {
     super()
+    this.httpException = true
+    this.message = getValue(message, 'operation failed.')
+    this.data = getValue(data, null)
     this.status = status || 400
-    this.message = message
   }
 }

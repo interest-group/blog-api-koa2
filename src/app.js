@@ -6,8 +6,7 @@ import koaJwt from 'koa-jwt'
 import koaBody from 'koa-body'
 import path from 'path'
 import config from './config'
-import success from './middleware/success'
-import onException from './middleware/onException'
+import httpException from './middleware/httpException'
 import apiRoutes from './routes/api'
 import platformRoutes from './routes/platform'
 
@@ -19,11 +18,12 @@ const env = process.env.NODE_ENV || 'development'
 koaOnerror(app)
 
 app
-  .use(success())
-  .use(onException())
+  .use(httpException())
   .use(koaLogger())
   .use(koaStatic('assets', path.resolve(__dirname, '../assets'))) // Static resource
-  .use(koaJwt({ secret: config.security.secretKey }).unless({ path: [/^\/api|^\/assets|^\/platform\/register/] }))
+  .use(koaJwt({ secret: config.security.secretKey }).unless({
+    path: [/^\/api|^\/platform\/user\/register|^\/platform\/user\/login/]
+  }))
   .use(koaBody({
     multipart: true,
     // parse GET, HEAD, DELETE requests

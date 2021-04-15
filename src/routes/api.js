@@ -10,4 +10,4 @@ router.get('/test/:id', async (ctx, next) => {
   }
 })
 
-module.exports = router
+export default router

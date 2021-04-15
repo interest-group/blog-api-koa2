@@ -1,71 +1,69 @@
-// 异常中间件
-async function httpException (ctx, next) {
-  try {
-    await next()
-  } catch (err) {
-    handler(ctx, err)
+class HttpException {
+  async handler (ctx, next) {
+    try {
+      await next()
+    } catch (err) {
+      return this.onException(ctx, err)
+    }
+    if (ctx.status !== 200) {
+      this.onException(ctx)
+    }
   }
-}
 
-// 异常处理
-function handler (ctx, err) {
+  onException (ctx, err) {
+    // 自定义错误
+    if (err && err.httpException) {
+      return this.onHttpException(ctx, err)
+    }
+    // 鉴权失败
+    if (err && err.status === 401) {
+      return this.onAuthorizationException(ctx, err)
+    }
+    // 程序错误
+    if (err) {
+      return this.serverException(ctx, err)
+    }
+    // 404
+    if (ctx.status === 404) {
+      return this.onNotFoundException(ctx, err)
+    }
+    return this.unknownException(ctx)
+  }
+
   // 自定义错误
-  if (err && err.httpException) {
-    return onHttpException(ctx, err)
+  onHttpException (ctx, err) {
+    this.success(ctx, err.status, err.data, err.message)
   }
-  console.log(ctx.status)
-  switch (ctx.status) {
-    case 401:
-      // 鉴权失败
-      return onAuthorizationException(ctx, err)
-    case 404:
-      // 404
-      return onNotFoundException(ctx, err)
-    default:
-      return serverException(ctx, err)
+
+  // 鉴权失败
+  onAuthorizationException (ctx, err) {
+    this.success(ctx, 401, null, 'protected resource, use Authorization header to get access.')
+  }
+
+  // 404
+  onNotFoundException (ctx, err) {
+    this.success(ctx, 404, null, 'resource not found.')
+  }
+
+  // 服务器错误
+  serverException (ctx, err) {
+    this.success(ctx, 500, null, err.message)
+  }
+
+  // 未知错误
+  unknownException (ctx) {
+    this.success(ctx, 503, null, 'unknown error.')
+  }
+
+  success (ctx, status, data, message) {
+    ctx.status = 200
+    ctx.body = { status, data, message }
   }
 }
 
-// 自定义错误
-function onHttpException (ctx, err) {
-  ctx.status = 200
-  ctx.body = {
-    status: err.status,
-    data: err.data,
-    message: err.message
-  }
-}
-
-// 鉴权失败
-function onAuthorizationException (ctx, err) {
-  ctx.status = 200
-  ctx.body = {
-    status: 401,
-    data: null,
-    message: 'protected resource, use Authorization header to get access.'
-  }
-}
-
-// 404
-function onNotFoundException (ctx, err) {
-  ctx.status = 200
-  ctx.body = {
-    status: 404,
-    data: null,
-    message: 'resource not found.'
-  }
-}
-
-// 其他错误
-function serverException (ctx, err) {
-  ctx.status = 200
-  ctx.body = {
-    status: 500,
-    data: null,
-    message: err ? err.message : 'unknown error.'
-  }
-}
+// 异常中间件
+const httpException = new HttpException()
 
 export default function () {
-  return httpException
+  return (ctx, next) => httpException.handler(ctx, next)
 }

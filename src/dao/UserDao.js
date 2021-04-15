@@ -5,7 +5,9 @@ import Exception from '../core/Exception'
 export default class UserDao {
   static async verify (username, password) {
     // 查询用户是否存在
-    const user = await UserModel.findOne({ where: { username } })
+    const user = await UserModel.scope(null).findOne({
+      where: { username }
+    })
     if (!user) {
       throw new Exception({ message: '用户名或密码错误.' })
     }

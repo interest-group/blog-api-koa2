@@ -1,4 +1,4 @@
-import BaseController from '../../core/BaseController'
+import BaseController from '../BaseController'
 
 import UserValidator from '../../validator/UserValidator'
 import UserService from '../../service/UserService'
@@ -20,7 +20,7 @@ export default class UserController extends BaseController {
 
   // 获取用户信息
   async info (ctx) {
-    const params = await new UserValidator(ctx).register()
-    this.success(params)
+    const { id, username, nickname } = ctx.state.user
+    this.success({ id, username, nickname })
   }
 }

@@ -1,23 +1,23 @@
+import Authorization from '../core/Authorization'
 import BaseService from './BaseService'
 import UserModel from '../models/UserModel'
-import Exception from '../core/Exception'
 import UserDao from '../dao/UserDao'
 
 export default class UserService extends BaseService {
   async register ({ nickname, username, password }) {
-    let user = await UserModel.findOne({ where: { username } })
+    const user = await UserModel.findOne({
+      where: { username }
+    })
     if (user) {
-      throw new Exception({ message: `user "${username}" already exist.` })
+      this.throwException(`user "${username}" already exist.`)
     }
-    user = new UserModel()
-    user.nickname = nickname
-    user.username = username
-    user.password = password
-    await user.save()
+    await UserModel.create({ nickname, username, password })
   }
 
   async login ({ username, password }) {
-    const user = await UserDao.verify(username, password)
+    const { id, nickname } = await UserDao.verify(username, password)
+    const user = { id, username, nickname }
+    user.token = new Authorization().sign(user)
     return user
   }
 }

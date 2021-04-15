@@ -1,4 +1,4 @@
-import Exception from './Exception'
+import Exception from '../core/Exception'
 import { getValue } from '../utils/tools'
 
 export default class BaseController {

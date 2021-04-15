@@ -5,10 +5,11 @@ import koaLogger from 'koa-logger'
 import koaJwt from 'koa-jwt'
 import koaBody from 'koa-body'
 import path from 'path'
-import config from './config'
 import httpException from './middleware/httpException'
+import identity from './middleware/identity'
+import authorizationCfg from './config/authorization'
+import serverCfg from './config/server'
 import apiRoutes from './routes/api'
-import platformRoutes from './routes/platform'
 
 const app = new Koa2()
 
@@ -18,11 +19,12 @@ const env = process.env.NODE_ENV || 'development'
 koaOnerror(app)
 
 app
-  .use(httpException())
   .use(koaLogger())
+  .use(httpException())
+  .use(identity())
   .use(koaStatic('assets', path.resolve(__dirname, '../assets'))) // Static resource
-  .use(koaJwt({ secret: config.security.secretKey }).unless({
-    path: [/^\/api|^\/platform\/user\/register|^\/platform\/user\/login/]
+  .use(koaJwt({ secret: authorizationCfg.secretKey }).unless({
+    path: [/^\/api\/v1\/login|^\/api\/v1\/register/]
   }))
   .use(koaBody({
     multipart: true,
@@ -35,9 +37,7 @@ app
     formLimit: '10mb',
     textLimit: '10mb'
   }))
-  // Processing request
   .use(apiRoutes.routes(), apiRoutes.allowedMethods())
-  .use(platformRoutes.routes(), platformRoutes.allowedMethods())
 
 if (env === 'development') {
   // logger
@@ -49,8 +49,8 @@ if (env === 'development') {
   })
 }
 
-app.listen(config.server.port)
+app.listen(serverCfg.port)
 
-console.log(`Now start API server on port ${config.server.port} ...`)
+console.log(`Now start API server on port ${serverCfg.port} ...`)
 
 export default app

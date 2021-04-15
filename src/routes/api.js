@@ -1,13 +1,14 @@
-import KoaRouter from 'koa-router'
+import registerRoutes from '../middleware/registerRoutes'
+import api from '../controller/api'
 
-const router = new KoaRouter({ prefix: '/api' })
-
-router.get('/test/:id', async (ctx, next) => {
-  ctx.body = {
-    result: '/test',
-    name: ctx.params.id,
-    para: ctx.request.body
-  }
+const router = registerRoutes({
+  prefix: '/api/v1',
+  controllers: api,
+  routes: [
+    ['post', '/register', 'UserController.register'],
+    ['post', '/login', 'UserController.login'],
+    ['post', '/user/info', 'UserController.info']
+  ]
 })
 
 export default router

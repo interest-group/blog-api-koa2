@@ -1,8 +1,11 @@
 import Sequelize from 'sequelize'
-
+import cls from 'cls-hooked'
 import config from '../config/database'
 
 const { host, port } = config
+
+const namespace = cls.createNamespace('sequelize-namespace')
+Sequelize.useCLS(namespace)
 
 const sequelize = new Sequelize(config.database, config.username, config.password, {
   dialect: 'mysql',
@@ -25,10 +28,10 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
   }
 })
 sequelize.authenticate().then(() => {
-  console.log('Connection has been established successfully.')
+  console.log('connection has been established successfully.')
   sequelize.sync()
 }).catch(error => {
-  console.error('Unable to connect to the database:', error)
+  console.error('unable to connect to the database:', error)
 })
 
 export default sequelize

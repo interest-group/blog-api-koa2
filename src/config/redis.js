@@ -1,7 +1,5 @@
 export default {
   host: 'localhost',
-  port: 3306,
-  database: 'blog',
-  username: 'root',
+  port: 6379,
   password: ''
 }

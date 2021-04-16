@@ -37,6 +37,11 @@ UserModel.init({
   email: {
     type: DataTypes.STRING(128),
     comment: '用户邮箱'
+  },
+  role: {
+    type: DataTypes.SMALLINT,
+    comment: '用户角色',
+    defaultValue: 1
   }
 }, {
   sequelize,

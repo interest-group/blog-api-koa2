@@ -1,21 +1,30 @@
 import bcrypt from 'bcryptjs'
+import Dao from './Dao'
 import UserModel from '../models/UserModel'
-import Exception from '../core/Exception'
 
-export default class UserDao {
-  static async verify (username, password) {
-    // 查询用户是否存在
+export default class UserDao extends Dao {
+  // 检查用户密码
+  static async verifyPassword (username, password) {
     const user = await UserModel.scope(null).findOne({
       where: { username }
     })
     if (!user) {
-      throw new Exception({ message: '用户名或密码错误.' })
+      Dao.throwException('invalid username or password.')
     }
     // 验证密码是否正确
     const correct = bcrypt.compareSync(password, user.password)
     if (!correct) {
-      throw new Exception({ message: '用户名或密码错误.' })
+      Dao.throwException('invalid username or password.')
     }
     return user
+  }
+
+  // 创建用户
+  static async createUser ({ nickname, username, password }) {
+    const user = await UserModel.findOne({ where: { username } })
+    if (user) {
+      Dao.throwException(`user "${username}" already exist.`)
+    }
+    return UserModel.create({ nickname, username, password })
   }
 }

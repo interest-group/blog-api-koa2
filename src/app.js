@@ -7,40 +7,45 @@ import koaBody from 'koa-body'
 import path from 'path'
 import httpException from './middleware/httpException'
 import identity from './middleware/identity'
-import authorizationCfg from './config/authorization'
+import { getOptions } from './core/Authorization'
 import serverCfg from './config/server'
 import apiRoutes from './routes/api'
+import { isDevelop } from './utils/env'
 
 const app = new Koa2()
 
-const env = process.env.NODE_ENV || 'development'
-
-// error handler
+// Error handler
 koaOnerror(app)
+// Console
+app.use(koaLogger())
+// Static resource
+app.use(koaStatic('assets', path.resolve(__dirname, '../assets')))
+// Global Exception
+app.use(httpException())
+// Jwt Verify
+app.use(koaJwt(getOptions()).unless({
+  path: [
+    /^\/api\/v1\/register/,
+    /^\/api\/v1\/login/
+  ]
+}))
+// User Identity
+app.use(identity())
+// Body Format
+app.use(koaBody({
+  multipart: true,
+  formidable: {
+    // 设置上传文件大小最大限制，默认2M
+    maxFileSize: 200 * 1024 * 1024
+    // uploadDir: path.join(__dirname, '../assets/uploads/tmp')
+  },
+  jsonLimit: '10mb',
+  formLimit: '10mb'
+}))
+// Routes
+app.use(apiRoutes.routes(), apiRoutes.allowedMethods())
 
-app
-  .use(koaLogger())
-  .use(httpException())
-  .use(identity())
-  .use(koaStatic('assets', path.resolve(__dirname, '../assets'))) // Static resource
-  .use(koaJwt({ secret: authorizationCfg.secretKey }).unless({
-    path: [/^\/api\/v1\/login|^\/api\/v1\/register/]
-  }))
-  .use(koaBody({
-    multipart: true,
-    // parse GET, HEAD, DELETE requests
-    parsedMethods: ['POST', 'PUT', 'PATCH', 'GET', 'HEAD', 'DELETE'],
-    formidable: {
-      uploadDir: path.join(__dirname, '../assets/uploads/tmp')
-    },
-    jsonLimit: '10mb',
-    formLimit: '10mb',
-    textLimit: '10mb'
-  }))
-  .use(apiRoutes.routes(), apiRoutes.allowedMethods())
-
-if (env === 'development') {
-  // logger
+if (isDevelop()) {
   app.use(async (ctx, next) => {
     const start = new Date()
     await next()

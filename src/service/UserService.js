@@ -1,23 +1,35 @@
 import Authorization from '../core/Authorization'
 import BaseService from './BaseService'
-import UserModel from '../models/UserModel'
 import UserDao from '../dao/UserDao'
+import UserModel from '../models/UserModel'
 
 export default class UserService extends BaseService {
+  // 注册
   async register ({ nickname, username, password }) {
-    const user = await UserModel.findOne({
-      where: { username }
+    return this.transaction(async () => {
+      const data = await UserDao.createUser({ nickname, username, password })
+      return this.signToken(data.get())
     })
-    if (user) {
-      this.throwException(`user "${username}" already exist.`)
-    }
-    await UserModel.create({ nickname, username, password })
   }
 
+  // 登录
   async login ({ username, password }) {
-    const { id, nickname } = await UserDao.verify(username, password)
-    const user = { id, username, nickname }
-    user.token = new Authorization().sign(user)
-    return user
+    const user = await UserDao.verifyPassword(username, password)
+    return this.signToken(user)
+  }
+
+  // 更新密码
+  async updatePassword ({ username, password, newPassword }) {
+    const { id } = await UserDao.verifyPassword(username, password)
+    return this.transaction(async () => {
+      await UserModel.update({ password: newPassword }, { where: { id } })
+    })
+  }
+
+  // 签发token
+  signToken ({ id, username, nickname, role }) {
+    const user = { id, username, nickname, role }
+    const token = new Authorization().sign(user)
+    return { user, token }
   }
 }

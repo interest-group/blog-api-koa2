@@ -7,7 +7,9 @@ const router = registerRoutes({
   routes: [
     ['post', '/register', 'UserController.register'],
     ['post', '/login', 'UserController.login'],
-    ['post', '/user/info', 'UserController.info']
+    ['get', '/user/info', 'UserController.info'],
+    ['get', '/user/logout', 'UserController.logout'],
+    ['post', '/user/update/password', 'UserController.updatePassword']
   ]
 })
 

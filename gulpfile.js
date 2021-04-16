@@ -17,7 +17,7 @@ gulp.task('ESlint', () => {
   return lint(['src/*.js'])
 })
 
-gulp.task('nodemon',  () => {
+gulp.task('nodemon', () => {
   return nodemon({
     script: './dev-server.js',
     execMap: {
@@ -28,15 +28,10 @@ gulp.task('nodemon',  () => {
       return []
     },
     verbose: true,
-    ignore: [
-      'dist/*.js',
-      '.git',
-      'node_modules/**/node_modules',
-      'gulpfile.js'
-    ],
     env: {
       NODE_ENV: 'development'
     },
+    watch: ['src'],
     ext: 'js json'
   })
     .on('restart', function () {

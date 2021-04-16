@@ -1,5 +1,10 @@
+import Exception from '../core/Exception'
+import { isDevelop } from '../utils/env'
+
 class HttpException {
   async handler (ctx, next) {
+    // 将 body 设置为空对象
+    ctx.body = {}
     try {
       await next()
     } catch (err) {
@@ -12,7 +17,7 @@ class HttpException {
 
   onException (ctx, err) {
     // 自定义错误
-    if (err && err.httpException) {
+    if (err && err instanceof Exception) {
       return this.onHttpException(ctx, err)
     }
     // 鉴权失败
@@ -21,6 +26,9 @@ class HttpException {
     }
     // 程序错误
     if (err) {
+      if (isDevelop()) {
+        console.log(err)
+      }
       return this.serverException(ctx, err)
     }
     // 404
@@ -57,7 +65,9 @@ class HttpException {
 
   success (ctx, status, data, message) {
     ctx.status = 200
-    ctx.body = { status, data, message }
+    ctx.body.status = status
+    ctx.body.data = data
+    ctx.body.message = message
   }
 }
 

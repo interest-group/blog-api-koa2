@@ -1,5 +1,4 @@
 import Koa2 from 'koa'
-import koaOnerror from 'koa-onerror'
 import koaStatic from 'koa-static2'
 import koaLogger from 'koa-logger'
 import koaJwt from 'koa-jwt'
@@ -14,8 +13,6 @@ import { isDevelop } from './utils/env'
 
 const app = new Koa2()
 
-// Error handler
-koaOnerror(app)
 // Console
 app.use(koaLogger())
 // Static resource

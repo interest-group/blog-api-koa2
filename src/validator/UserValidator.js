@@ -22,7 +22,6 @@ export default class UserValidator extends BaseValidator {
   // 更新密码校验
   updatePassword () {
     return this.validator(Joi.object({
-      username: this.string(4, 30),
       password: this.string(4, 30),
       newPassword: this.string(4, 30)
     }))

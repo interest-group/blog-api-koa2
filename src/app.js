@@ -9,7 +9,7 @@ import httpException from './middleware/httpException'
 import identity from './middleware/identity'
 import { getOptions } from './core/Authorization'
 import serverCfg from './config/server'
-import apiRoutes from './routes/api'
+import useRoutes from './routes'
 import { isDevelop } from './utils/env'
 
 const app = new Koa2()
@@ -25,8 +25,8 @@ app.use(httpException())
 // Jwt Verify
 app.use(koaJwt(getOptions()).unless({
   path: [
-    /^\/api\/v1\/register/,
-    /^\/api\/v1\/login/
+    /^\/platform\/v1\/register/,
+    /^\/platform\/v1\/login/
   ]
 }))
 // User Identity
@@ -43,7 +43,7 @@ app.use(koaBody({
   formLimit: '10mb'
 }))
 // Routes
-app.use(apiRoutes.routes(), apiRoutes.allowedMethods())
+useRoutes(app)
 
 if (isDevelop()) {
   app.use(async (ctx, next) => {

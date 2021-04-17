@@ -7,9 +7,8 @@ const redis = new IoRedis(config)
 redis.on('connect', () => {
   console.log('redis connection success.')
 })
-redis.on('error', (err) => {
-  console.log('redis connection error.')
-  console.log(err)
+redis.on('error', (error) => {
+  console.log('redis connection fail:', error)
 })
 
 export default redis

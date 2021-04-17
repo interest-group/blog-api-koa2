@@ -1,8 +1,8 @@
 import registerRoutes from '../middleware/registerRoutes'
-import controllers from '../controller/api'
+import controllers from '../controller/platform'
 
 export default registerRoutes({
-  prefix: '/api/v1',
+  prefix: '/platform/v1',
   controllers,
   routes: [
     ['post', '/register', 'UserController.register'],

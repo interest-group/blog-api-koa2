@@ -1,5 +1,4 @@
 import jsonwebtoken from 'jsonwebtoken'
-import md5 from 'js-md5'
 import config from '../config/authorization'
 import { getRedis, setRedis } from './redis'
 import { timestamp } from '../utils/tools'
@@ -7,43 +6,41 @@ import { timestamp } from '../utils/tools'
 export default class Authorization {
   // 签发
   sign ({ id, username, nickname, role }) {
-    // 生成 16位 tokenId
-    const tid = md5(nickname + Math.random()).substr(8, 16)
-    return jsonwebtoken.sign({ id, username, nickname, tid, role }, config.secretKey, { expiresIn: config.expiresIn })
+    return jsonwebtoken.sign({ id, username, nickname, role }, config.secretKey, { expiresIn: config.expiresIn })
   }
 
-  // 续签 decodedToken
-  renewal (data) {
+  // 续签 tokenValue
+  renewal (tokenValue) {
     // 当前时间
     const time = timestamp()
     // 超过续签时间 且 在有效期内
-    if (time > data.iat + config.renewal && data.exp > time) {
-      return this.sign(data)
+    if (time > tokenValue.iat + config.renewal && tokenValue.exp > time) {
+      return this.sign(tokenValue)
     }
   }
 
-  // 撤销当前令牌 decodedToken
+  // 撤销当前令牌 tokenValue
   // 当前令牌加入黑名单
-  async revoke (data) {
-    const block = await this.getRedisBlock(data.id)
-    if (!block.revoked.includes(data.tid)) {
-      block.revoked.push(data.tid)
-      await this.setRedisBlock(data.id, block)
+  async revoke (tokenValue) {
+    const block = await this.getRedisBlock(tokenValue.id)
+    if (!block.revoked.includes(tokenValue.iat)) {
+      block.revoked.push(tokenValue.iat)
+      await this.setRedisBlock(tokenValue.id, block)
     }
   }
 
-  // 撤销用户所有令牌 decodedToken
+  // 撤销用户所有令牌 tokenValue
   // 更新重签时间
-  async revokeAll (data) {
-    const block = await this.getRedisBlock(data.id)
+  async revokeAll (tokenValue) {
+    const block = await this.getRedisBlock(tokenValue.id)
     block.time = timestamp()
-    await this.setRedisBlock(data.id, block)
+    await this.setRedisBlock(tokenValue.id, block)
   }
 
   // 检查是否失效
   async isRevoked (ctx, data) {
     const block = await this.getRedisBlock(data.id)
-    return (block.time && data.iat < block.time) || block.revoked.includes(data.tid)
+    return (block.time && data.iat < block.time) || block.revoked.includes(data.iat)
   }
 
   // 获取黑名单

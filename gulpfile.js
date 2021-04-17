@@ -19,7 +19,7 @@ gulp.task('ESlint', () => {
 
 gulp.task('nodemon', () => {
   return nodemon({
-    script: './dev-server.js',
+    script: './main.js',
     execMap: {
       js: 'node'
     },

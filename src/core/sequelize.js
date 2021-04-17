@@ -28,10 +28,10 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
   }
 })
 sequelize.authenticate().then(() => {
-  console.log('connection has been established successfully.')
+  console.log('mysql connection successfully.')
   sequelize.sync()
 }).catch(error => {
-  console.error('unable to connect to the database:', error)
+  console.log('mysql connection fail:', error)
 })
 
 export default sequelize

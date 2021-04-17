@@ -25,6 +25,7 @@ app.use(httpException())
 // Jwt Verify
 app.use(koaJwt(getOptions()).unless({
   path: [
+    /^\/api/,
     /^\/platform\/v1\/register/,
     /^\/platform\/v1\/login/
   ]

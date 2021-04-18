@@ -2,7 +2,7 @@
 ## 接口前缀
 
 ```shell
-http://localhost:5220/platform/v1
+http://localhost:5220/api/v1
 ```
 
 # 用户
@@ -10,7 +10,7 @@ http://localhost:5220/platform/v1
 ## 注册
 
 ```
-POST    /register
+POST    /user/register
 ```
 
 ### 请求参数
@@ -41,7 +41,7 @@ POST    /register
 ## 登录
 
 ```
-POST    /login
+POST    /user/login
 ```
 
 ### 请求参数

@@ -4,6 +4,12 @@ export function getValue (value, def) {
   return value !== undefined ? value : def
 }
 
+// 设置 ctx.body
+export function mergeBody (ctx, value) {
+  ctx.body = ctx.body || {}
+  Object.assign(ctx.body, value)
+}
+
 // 时间戳 秒
 export function timestamp () {
   return Math.round(+new Date() / 1000)

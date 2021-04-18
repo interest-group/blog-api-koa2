@@ -1,10 +1,9 @@
 import Exception from '../core/Exception'
 import server from '../config/server'
+import { mergeBody } from '../utils/tools'
 
 class HttpException {
   async handler (ctx, next) {
-    // 将 body 设置为空对象
-    ctx.body = {}
     try {
       await next()
     } catch (error) {
@@ -65,9 +64,7 @@ class HttpException {
 
   success (ctx, status, data, message) {
     ctx.status = 200
-    ctx.body.status = status
-    ctx.body.data = data
-    ctx.body.message = message
+    mergeBody(ctx, { status, data, message })
   }
 }
 

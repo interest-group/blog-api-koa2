@@ -8,25 +8,21 @@ import httpException from './middleware/httpException'
 import identity from './middleware/identity'
 import { getOptions } from './core/Authorization'
 import serverCfg from './config/server'
-import useRoutes from './routes'
+import apiRouter, { skipJwtApis } from './routes/api'
 import { isDevelop } from './utils/env'
+
+import './models/index'
 
 const app = new Koa2()
 
 // Console
 app.use(koaLogger())
 // Static resource
-app.use(koaStatic('assets', path.resolve(__dirname, '../assets')))
+app.use(koaStatic('resources', path.resolve(__dirname, '../resources')))
 // Global Exception
 app.use(httpException())
 // Jwt Verify
-app.use(koaJwt(getOptions()).unless({
-  path: [
-    /^\/api/,
-    /^\/platform\/v1\/register/,
-    /^\/platform\/v1\/login/
-  ]
-}))
+app.use(koaJwt(getOptions()).unless({ path: [/^\/resources/].concat(skipJwtApis) }))
 // User Identity
 app.use(identity())
 // Body Format
@@ -35,13 +31,13 @@ app.use(koaBody({
   formidable: {
     // 设置上传文件大小最大限制，默认2M
     maxFileSize: 200 * 1024 * 1024
-    // uploadDir: path.join(__dirname, '../assets/uploads/tmp')
   },
   jsonLimit: '10mb',
   formLimit: '10mb'
 }))
 // Routes
-useRoutes(app)
+app.use(apiRouter.routes())
+app.use(apiRouter.allowedMethods())
 
 if (isDevelop()) {
   app.use(async (ctx, next) => {

@@ -1,7 +1,7 @@
 import Authorization from '../core/Authorization'
 import BaseService from './BaseService'
 import UserDao from '../dao/UserDao'
-import UserModel from '../models/UserModel'
+import UserProfileModel from '../models/UserProfileModel'
 
 export default class UserService extends BaseService {
   // 注册
@@ -32,7 +32,7 @@ export default class UserService extends BaseService {
   async updatePassword (tokenValue, { password, newPassword }) {
     const { id } = await UserDao.verifyPassword(tokenValue.username, password)
     await this.transaction(async () => {
-      await UserModel.update({ password: newPassword }, { where: { id } })
+      await UserProfileModel.update({ password: newPassword }, { where: { id } })
     })
     // 撤销用户所有令牌
     await new Authorization().revokeAll(tokenValue)

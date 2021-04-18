@@ -1,5 +1,5 @@
 import Exception from '../core/Exception'
-import { getValue } from '../utils/tools'
+import { getValue, mergeBody } from '../utils/tools'
 
 export default class BaseController {
   constructor (ctx) {
@@ -9,9 +9,11 @@ export default class BaseController {
   // 成功回调
   success (data, message) {
     this.ctx.status = 200
-    this.ctx.body.status = 200
-    this.ctx.body.data = getValue(data, null)
-    this.ctx.body.message = getValue(message, 'operation success.')
+    mergeBody(this.ctx, {
+      status: 200,
+      data: getValue(data, null),
+      message: getValue(message, 'operation success.')
+    })
   }
 
   // 失败回调

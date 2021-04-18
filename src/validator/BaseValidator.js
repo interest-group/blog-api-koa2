@@ -6,12 +6,13 @@ export default class BaseValidator {
     this.ctx = ctx
   }
 
-  string (min, max) {
-    return Joi.string().min(min).max(max).required()
+  string (min, max, isRequired) {
+    const schema = Joi.string().min(min).max(max)
+    return isRequired ? schema.required() : schema
   }
 
-  validator (schema) {
-    const inputs = this.ctx.request.body
+  validator (schema, data) {
+    const inputs = data || this.ctx.request.body
     const { value, error } = schema.validate(inputs)
     if (error) {
       throw new Exception({ status: 415, data: null, message: error.message })

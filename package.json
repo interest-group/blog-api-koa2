@@ -22,6 +22,7 @@
     "koa-router": "^7.4.0",
     "koa-static2": "^0.1.8",
     "mysql2": "^2.2.5",
+    "qiniu": "^7.3.2",
     "sequelize": "^6.6.2"
   },
   "devDependencies": {

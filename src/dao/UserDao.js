@@ -1,11 +1,11 @@
 import bcrypt from 'bcryptjs'
 import Dao from './Dao'
-import UserModel from '../models/UserModel'
+import UserProfileModel from '../models/UserProfileModel'
 
 export default class UserDao extends Dao {
   // 检查用户密码
   static async verifyPassword (username, password) {
-    const user = await UserModel.scope(null).findOne({
+    const user = await UserProfileModel.scope(null).findOne({
       where: { username }
     })
     if (!user) {
@@ -21,10 +21,10 @@ export default class UserDao extends Dao {
 
   // 创建用户
   static async createUser ({ nickname, username, password }) {
-    const user = await UserModel.findOne({ where: { username } })
+    const user = await UserProfileModel.findOne({ where: { username } })
     if (user) {
       Dao.throwException(`user "${username}" already exist.`)
     }
-    return UserModel.create({ nickname, username, password })
+    return UserProfileModel.create({ nickname, username, password })
   }
 }

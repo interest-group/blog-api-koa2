@@ -1,4 +1,5 @@
 import Authorization from '../core/Authorization'
+import { mergeBody } from '../utils/tools'
 
 const authorization = new Authorization()
 
@@ -8,11 +9,11 @@ export default function () {
     // 标记用户id
     const user = ctx.state.user
     if (user) {
-      ctx.body.uid = user.id
+      mergeBody(ctx, { uid: user.id })
       // 签发新token
       const token = authorization.renewal(ctx)
       if (token) {
-        ctx.body.token = token
+        mergeBody(ctx, { token })
       }
     }
   }

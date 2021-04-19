@@ -28,6 +28,11 @@ export default class UserService extends BaseService {
     await new Authorization().revoke(tokenValue)
   }
 
+  // 获取用户摘要
+  async getUserProfile (id) {
+    return await UserDao.getUserInfo(id)
+  }
+
   // 更新密码
   async updatePassword (tokenValue, { password, newPassword }) {
     const { id } = await UserDao.verifyPassword(tokenValue.username, password)

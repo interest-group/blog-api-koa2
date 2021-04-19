@@ -22,12 +22,6 @@ export default class UserController extends BaseController {
     ctx.body.token = token
   }
 
-  // 获取用户信息
-  async info (ctx) {
-    const userInfo = new UserService(ctx).toUserInfo(ctx.state.user)
-    this.success(userInfo)
-  }
-
   // 退出登录
   async logout (ctx) {
     await new UserService(ctx).logout(ctx.state.user)
@@ -42,5 +36,18 @@ export default class UserController extends BaseController {
     await new UserService(ctx).updatePassword(tokenValue, params)
     ctx.state.user = null
     this.success()
+  }
+
+  // 获取当前用户摘要
+  async getCurrentProfile (ctx) {
+    const userInfo = new UserService(ctx).toUserInfo(ctx.state.user)
+    this.success(userInfo)
+  }
+
+  // 获取用户摘要
+  async getUserProfile (ctx) {
+    const { id } = await new UserValidator(ctx).paramsId()
+    const userInfo = await new UserService(ctx).getUserProfile(id)
+    this.success(userInfo)
   }
 }

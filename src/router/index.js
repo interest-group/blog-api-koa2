@@ -26,6 +26,18 @@ export default {
     },
     {
       method: 'get',
+      path: '/user/profile',
+      action: 'UserController.getCurrentProfile',
+      auth: true
+    },
+    {
+      method: 'get',
+      path: '/user/profile/:id',
+      action: 'UserController.getUserProfile',
+      auth: true
+    },
+    {
+      method: 'get',
       path: '/user/info',
       action: 'UserController.info',
       auth: true

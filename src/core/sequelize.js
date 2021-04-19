@@ -1,4 +1,4 @@
-import Sequelize, { DataTypes } from 'sequelize'
+import Sequelize from 'sequelize'
 import cls from 'cls-hooked'
 import config from '../config/database'
 
@@ -24,11 +24,11 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
       attributes: {
         exclude: ['password', 'updateTime', 'deleteTime']
       }
-    },
-    createUserId: {
-      type: DataTypes.INTEGER,
-      comment: '创建人id'
     }
+    // createUserId: {
+    //   type: DataTypes.INTEGER,
+    //   comment: '创建人id'
+    // }
   }
 })
 sequelize.authenticate().then(() => {

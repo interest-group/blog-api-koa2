@@ -2,12 +2,6 @@ import KoaRouter from 'koa-router'
 import Joi from 'joi'
 import Exception from '../core/Exception'
 
-// 过滤路由
-export function unAuth ({ prefix, routes }) {
-  return routes.filter(route => !route.auth)
-    .map(route => new RegExp(`^${prefix}${route.path}`))
-}
-
 // 注册路由
 export function registerRoutes (routerConfig) {
   const { prefix, controllers, routes } = validator(routerConfig)
@@ -15,6 +9,15 @@ export function registerRoutes (routerConfig) {
   for (let i = 0; i < routes.length; i++) {
     addRoute(router, controllers, routes[i])
   }
+  return router.routes()
+}
+
+// 注册404
+export function register404 () {
+  const router = new KoaRouter()
+  router.all('*', (ctx) => {
+    throw new Exception({ status: 404, data: null, message: 'resource not found.' })
+  })
   return router.routes()
 }
 

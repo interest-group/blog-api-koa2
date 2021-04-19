@@ -6,13 +6,11 @@ import koaBody from 'koa-body'
 import path from 'path'
 import { isDevelop } from './utils/env'
 import { middlewareOptions } from './core/Authorization'
-import { registerRoutes, allowedMethods } from './middleware/registerRoutes'
+import { registerRoutes, register404, allowedMethods } from './middleware/registerRoutes'
 import httpException from './middleware/httpException'
 import identity from './middleware/identity'
 import serverCfg from './config/server'
 import router from './router'
-
-import './models/index'
 
 const app = new Koa2()
 
@@ -38,6 +36,7 @@ app.use(koaBody({
 }))
 // Routes
 app.use(registerRoutes(router))
+app.use(register404())
 app.use(allowedMethods())
 
 if (isDevelop()) {

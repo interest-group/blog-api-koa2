@@ -6,6 +6,13 @@ export default class BaseValidator {
     this.ctx = ctx
   }
 
+  // 检查id
+  paramsId () {
+    return this.validator(Joi.object({
+      id: Joi.number().integer().min(1)
+    }), this.ctx.params)
+  }
+
   string (min, max, isRequired) {
     const schema = Joi.string().min(min).max(max)
     return isRequired ? schema.required() : schema

@@ -1,375 +1,454 @@
 {
 	"info": {
-		"_postman_id": "90615401-0dfd-4fe4-83c6-ee552d30d2e4",
+		"_postman_id": "74e48662-a126-432b-b09c-4f13325ab086",
 		"name": "blog",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "user",
+			"name": "public",
 			"item": [
 				{
-					"name": "{{host}}/user/register",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/x-www-form-urlencoded"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "nickname",
-									"value": "brandon",
-									"type": "text"
+					"name": "user",
+					"item": [
+						{
+							"name": "{{public}}/user/login",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
 								},
-								{
-									"key": "username",
-									"value": "focus",
-									"type": "text"
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "focus",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "focus",
+											"type": "text"
+										}
+									]
 								},
-								{
-									"key": "password",
-									"value": "focus",
-									"type": "text"
+								"url": {
+									"raw": "{{public}}/user/login",
+									"host": [
+										"{{public}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{host}}/user/register",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"user",
-								"register"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "{{host}}/user/login",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "focus",
-									"type": "text"
+						{
+							"name": "{{public}}/user/register",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nickname",
+											"value": "brandon",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "focus3",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "focus",
+											"type": "text"
+										}
+									]
 								},
-								{
-									"key": "password",
-									"value": "focus",
-									"type": "text"
+								"url": {
+									"raw": "{{public}}/user/register",
+									"host": [
+										"{{public}}"
+									],
+									"path": [
+										"user",
+										"register"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{host}}/user/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"user",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "{{host}}/user/info",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{host}}/user/info",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"user",
-								"info"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "{{host}}/user/info/5",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{host}}/user/info/5",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"user",
-								"info",
-								"5"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "{{host}}/user/info",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{host}}/user/info",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"user",
-								"info"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "{{host}}/user/logout",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{host}}/user/logout",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"user",
-								"logout"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "{{host}}/user/update/password",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "password",
-									"value": "admin2",
-									"type": "text"
+						{
+							"name": "{{public}}/user/info/5",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
 								},
-								{
-									"key": "newPassword",
-									"value": "admin",
-									"type": "text"
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{public}}/user/info/5",
+									"host": [
+										"{{public}}"
+									],
+									"path": [
+										"user",
+										"info",
+										"5"
+									]
 								}
-							]
-						},
-						"url": {
-							"raw": "{{host}}/user/update/password",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"user",
-								"update",
-								"password"
-							]
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "file",
+					"item": [
+						{
+							"name": "{{public}}/file/upload/server",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/Brandon/Pictures/retrome/Food1.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{public}}/file/upload/server",
+									"host": [
+										"{{public}}"
+									],
+									"path": [
+										"file",
+										"upload",
+										"server"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{public}}/file/upload/oss",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"value": "",
+											"type": "file"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{public}}/file/upload/oss",
+									"host": [
+										"{{public}}"
+									],
+									"path": [
+										"file",
+										"upload",
+										"oss"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{public}}/file/upload/token",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"value": "",
+											"type": "file"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{public}}/file/upload/token",
+									"host": [
+										"{{public}}"
+									],
+									"path": [
+										"file",
+										"upload",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "https://upload-z2.qiniup.com",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/Brandon/Pictures/retrome/Food1.jpg"
+										},
+										{
+											"key": "token",
+											"value": "TjZwfb38nKptqsGGNTqMvyk5mIZPOSp0HHJtF50o:OMdJHh8l4F64GRAjQwNyXOplFSs=:eyJzY29wZSI6ImJsb2ctbm9kZSIsImRlYWRsaW5lIjoxNjE4NzYxODEwfQ==",
+											"type": "text"
+										},
+										{
+											"key": "key",
+											"value": "2223.jpg",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://upload-z2.qiniup.com",
+									"protocol": "https",
+									"host": [
+										"upload-z2",
+										"qiniup",
+										"com"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
 		{
-			"name": "file",
+			"name": "private",
 			"item": [
 				{
-					"name": "{{host}}/file/upload/server",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": ""
+					"name": "user",
+					"item": [
+						{
+							"name": "{{private}}/user/info",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{private}}/user/info",
+									"host": [
+										"{{private}}"
+									],
+									"path": [
+										"user",
+										"info"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{host}}/file/upload/server",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"file",
-								"upload",
-								"server"
-							]
+						{
+							"name": "{{private}}/user/logout",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{private}}/user/logout",
+									"host": [
+										"{{private}}"
+									],
+									"path": [
+										"user",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{private}}/user/password",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "password",
+											"value": "admin2",
+											"type": "text"
+										},
+										{
+											"key": "newPassword",
+											"value": "admin",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{private}}/user/password",
+									"host": [
+										"{{private}}"
+									],
+									"path": [
+										"user",
+										"password"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "{{host}}/file/upload/oss",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": ""
+					"name": "system",
+					"item": [
+						{
+							"name": "{{private}}/system/configuration",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{private}}/system/configuration?pageIndex=12&pageSize=10",
+									"host": [
+										"{{private}}"
+									],
+									"path": [
+										"system",
+										"configuration"
+									],
+									"query": [
+										{
+											"key": "pageIndex",
+											"value": "12"
+										},
+										{
+											"key": "pageSize",
+											"value": "10"
+										}
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{host}}/file/upload/oss",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"file",
-								"upload",
-								"oss"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "{{host}}/file/upload/token",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": ""
+						{
+							"name": "{{private}}/system/configuration/1",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{private}}/system/configuration/1",
+									"host": [
+										"{{private}}"
+									],
+									"path": [
+										"system",
+										"configuration",
+										"1"
+									]
 								}
-							]
-						},
-						"url": {
-							"raw": "{{host}}/file/upload/token",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"file",
-								"upload",
-								"token"
-							]
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				}
 			]
 		}

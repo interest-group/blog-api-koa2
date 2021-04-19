@@ -29,7 +29,7 @@ export default class UserService extends BaseService {
   }
 
   // 获取用户摘要
-  async getUserProfile (id) {
+  async getUserInfo (id) {
     return await UserDao.getUserInfo(id)
   }
 

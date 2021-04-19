@@ -38,16 +38,16 @@ export default class UserController extends BaseController {
     this.success()
   }
 
-  // 获取当前用户摘要
-  async getCurrentProfile (ctx) {
+  // 获取token信息
+  async getTokenInfo (ctx) {
     const userInfo = new UserService(ctx).toUserInfo(ctx.state.user)
     this.success(userInfo)
   }
 
   // 获取用户摘要
-  async getUserProfile (ctx) {
+  async getUserInfo (ctx) {
     const { id } = await new UserValidator(ctx).paramsId()
-    const userInfo = await new UserService(ctx).getUserProfile(id)
+    const userInfo = await new UserService(ctx).getUserInfo(id)
     this.success(userInfo)
   }
 }

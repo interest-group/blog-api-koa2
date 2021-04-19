@@ -129,6 +129,71 @@
 					"response": []
 				},
 				{
+					"name": "{{host}}/user/info/5",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/user/info/5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"info",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{host}}/user/info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/user/info",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "{{host}}/user/logout",
 					"request": {
 						"auth": {

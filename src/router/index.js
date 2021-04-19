@@ -26,14 +26,14 @@ export default {
     },
     {
       method: 'get',
-      path: '/user/profile',
-      action: 'UserController.getCurrentProfile',
+      path: '/user/info',
+      action: 'UserController.getTokenInfo',
       auth: true
     },
     {
       method: 'get',
-      path: '/user/profile/:id',
-      action: 'UserController.getUserProfile',
+      path: '/user/info/:id',
+      action: 'UserController.getUserInfo',
       auth: true
     },
     {

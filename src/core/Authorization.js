@@ -55,10 +55,11 @@ export default class Authorization {
 }
 
 // koa-jwt 配置项
-export function getOptions () {
+export function middlewareOptions () {
   const authorization = new Authorization()
   return {
     secret: config.secretKey,
-    isRevoked: authorization.isRevoked.bind(authorization)
+    isRevoked: authorization.isRevoked.bind(authorization),
+    passthrough: true
   }
 }

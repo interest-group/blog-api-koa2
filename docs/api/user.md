@@ -71,7 +71,7 @@ POST    /user/login
 ## 登出
 
 ```
-POST    /user/logout
+GET    /user/logout
 ```
 
 ### 请求参数
@@ -92,7 +92,7 @@ POST    /user/logout
 ## 用户信息
 
 ```
-POST    /user/info
+GET    /user/info
 ```
 
 ### 请求参数

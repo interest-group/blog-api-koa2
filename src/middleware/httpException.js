@@ -3,74 +3,60 @@ import server from '../config/server'
 import { mergeBody } from '../utils/tools'
 
 class HttpException {
-  async handler (ctx, next) {
+  constructor (ctx) {
+    this.ctx = ctx
+  }
+
+  // 入口
+  async handler (next) {
     try {
       await next()
     } catch (error) {
-      if (server.printException) {
-        console.log(error)
-      }
-      return this.onException(ctx, error)
+      return this.catchException(error)
     }
-    if (ctx.status !== 200) {
-      this.onException(ctx)
+    if (this.ctx.status !== 200) {
+      this.onStatusException()
     }
   }
 
-  onException (ctx, error) {
-    // 自定义错误
-    if (error && error instanceof Exception) {
-      return this.onHttpException(ctx, error)
+  // 捕获错误
+  catchException (error) {
+    if (server.printException) {
+      console.log(error)
     }
-    // 鉴权失败
-    if (error && error.status === 401) {
-      return this.onAuthorizationException(ctx, error)
+    // 自定义错误
+    if (error instanceof Exception) {
+      return this.success(error.status, error.data, error.message)
     }
     // 程序错误
-    if (error) {
-      return this.serverException(ctx, error)
+    return this.success(500, null, error.message)
+  }
+
+  // 状态异常
+  onStatusException () {
+    switch (this.ctx.status) {
+      // 鉴权失败
+      case 401:
+        return this.success(401, null, 'protected resource, use Authorization header to get access.')
+      // not found
+      case 404:
+        return this.success(404, null, 'resource not found.')
+      // not allowed
+      case 405:
+        return this.success(405, null, 'method not allowed.')
+      // 未知错误
+      default:
+        return this.success(503, null, 'unknown error.')
     }
-    // 404
-    if (ctx.status === 404) {
-      return this.onNotFoundException(ctx, error)
-    }
-    return this.unknownException(ctx)
   }
 
-  // 自定义错误
-  onHttpException (ctx, error) {
-    this.success(ctx, error.status, error.data, error.message)
-  }
-
-  // 鉴权失败
-  onAuthorizationException (ctx, error) {
-    this.success(ctx, 401, null, 'protected resource, use Authorization header to get access.')
-  }
-
-  // 404
-  onNotFoundException (ctx, error) {
-    this.success(ctx, 404, null, 'resource not found.')
-  }
-
-  // 服务器错误
-  serverException (ctx, error) {
-    this.success(ctx, 500, null, error.message)
-  }
-
-  // 未知错误
-  unknownException (ctx) {
-    this.success(ctx, 503, null, 'unknown error.')
-  }
-
-  success (ctx, status, data, message) {
-    ctx.status = 200
-    mergeBody(ctx, { status, data, message })
+  success (status, data, message) {
+    this.ctx.status = 200
+    mergeBody(this.ctx, { status, data, message })
   }
 }
 
 // 异常中间件
-const httpException = new HttpException()
-
 export default function () {
-  return (ctx, next) => httpException.handler(ctx, next)
+  return (ctx, next) => new HttpException(ctx).handler(next)
 }

@@ -4,12 +4,13 @@ import koaLogger from 'koa-logger'
 import koaJwt from 'koa-jwt'
 import koaBody from 'koa-body'
 import path from 'path'
+import { isDevelop } from './utils/env'
+import { middlewareOptions } from './core/Authorization'
+import { registerRoutes, allowedMethods } from './middleware/registerRoutes'
 import httpException from './middleware/httpException'
 import identity from './middleware/identity'
-import { getOptions } from './core/Authorization'
 import serverCfg from './config/server'
-import apiRouter, { skipJwtApis } from './routes/api'
-import { isDevelop } from './utils/env'
+import router from './routes/api'
 
 import './models/index'
 
@@ -22,7 +23,7 @@ app.use(koaStatic('resources', path.resolve(__dirname, '../resources')))
 // Global Exception
 app.use(httpException())
 // Jwt Verify
-app.use(koaJwt(getOptions()).unless({ path: [/^\/resources/].concat(skipJwtApis) }))
+app.use(koaJwt(middlewareOptions()).unless({ path: [/^\/resources/] }))
 // User Identity
 app.use(identity())
 // Body Format
@@ -36,8 +37,8 @@ app.use(koaBody({
   formLimit: '10mb'
 }))
 // Routes
-app.use(apiRouter.routes())
-app.use(apiRouter.allowedMethods())
+app.use(registerRoutes(router))
+app.use(allowedMethods())
 
 if (isDevelop()) {
   app.use(async (ctx, next) => {

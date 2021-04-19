@@ -9,6 +9,7 @@ export default class UserController extends BaseController {
     const params = await new UserValidator(ctx).register()
     const { userInfo, token } = await new UserService(ctx).register(params)
     this.success(userInfo)
+    ctx.state.user = null
     ctx.body.token = token
   }
 
@@ -17,6 +18,7 @@ export default class UserController extends BaseController {
     const params = await new UserValidator(ctx).login()
     const { userInfo, token } = await new UserService(ctx).login(params)
     this.success(userInfo)
+    ctx.state.user = null
     ctx.body.token = token
   }
 

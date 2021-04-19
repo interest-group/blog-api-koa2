@@ -2,14 +2,9 @@ import KoaRouter from 'koa-router'
 import Joi from 'joi'
 import Exception from '../core/Exception'
 
-// 注册路由
-export function registerRoutes (routerConfig) {
-  const { prefix, controllers, routes } = validator(routerConfig)
-  const router = new KoaRouter({ prefix })
-  for (let i = 0; i < routes.length; i++) {
-    addRoute(router, controllers, routes[i])
-  }
-  return router.routes()
+// allowedMethods
+export function allowedMethods () {
+  return new KoaRouter().allowedMethods()
 }
 
 // 注册404
@@ -21,17 +16,22 @@ export function register404 () {
   return router.routes()
 }
 
-// allowedMethods
-export function allowedMethods () {
-  return new KoaRouter().allowedMethods()
+// 注册路由
+export function registerRoutes (config) {
+  const { prefix, module, routes, auth } = validator(config)
+  const router = new KoaRouter({ prefix })
+  for (let i = 0; i < routes.length; i++) {
+    addRoute(router, module, routes[i], auth)
+  }
+  return router.routes()
 }
 
 // 添加路由
-function addRoute (router, controllers, route) {
-  const { method, path, action, auth } = route
-  const [className, actionName] = action.split('.')
+function addRoute (router, module, route, auth) {
+  const { method, path, action } = route
+  const [controllerName, actionName] = action.split('.')
   // 控制器
-  const Controller = controllers[className]
+  const Controller = require(`../controller/${module}/${controllerName}`).default
   router[method](path, (ctx) => {
     // jwt 校验
     if (auth && ctx.state.jwtOriginalError) {
@@ -45,13 +45,13 @@ function addRoute (router, controllers, route) {
 // 参数校验 schema
 const schema = Joi.object({
   prefix: Joi.string().required(),
-  controllers: Joi.object().required(),
+  module: Joi.string().required(),
+  auth: Joi.boolean(),
   routes: Joi.array().items(
     Joi.object({
       method: Joi.string().required(),
       path: Joi.string().required(),
-      action: Joi.string().required(),
-      auth: Joi.boolean()
+      action: Joi.string().required()
     }).required()
   ).required()
 })

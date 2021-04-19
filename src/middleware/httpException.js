@@ -1,5 +1,5 @@
+import config from 'config'
 import Exception from '../core/Exception'
-import server from '../config/server'
 import { mergeBody } from '../utils/tools'
 
 class HttpException {
@@ -21,7 +21,7 @@ class HttpException {
 
   // 捕获错误
   catchException (error) {
-    if (server.printException) {
+    if (config.get('server.consoleError')) {
       console.log(error)
     }
     // 自定义错误

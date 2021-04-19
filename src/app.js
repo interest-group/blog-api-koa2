@@ -1,19 +1,19 @@
+import path from 'path'
+import config from 'config'
 import Koa2 from 'koa'
 import koaStatic from 'koa-static2'
 import koaLogger from 'koa-logger'
 import koaJwt from 'koa-jwt'
 import koaBody from 'koa-body'
-import path from 'path'
 import { isDevelop } from './utils/env'
 import { middlewareOptions } from './core/Authorization'
 import { registerRoutes, register404, allowedMethods } from './middleware/registerRoutes'
 import httpException from './middleware/httpException'
 import identity from './middleware/identity'
-import serverCfg from './config/server'
-import router from './router'
+import publicRouter from './router/public'
+import privateRouter from './router/private'
 
 const app = new Koa2()
-
 // Console
 app.use(koaLogger())
 // Static resource
@@ -35,7 +35,8 @@ app.use(koaBody({
   formLimit: '10mb'
 }))
 // Routes
-app.use(registerRoutes(router))
+app.use(registerRoutes(publicRouter))
+app.use(registerRoutes(privateRouter))
 app.use(register404())
 app.use(allowedMethods())
 
@@ -48,8 +49,8 @@ if (isDevelop()) {
   })
 }
 
-app.listen(serverCfg.port)
+app.listen(config.get('server.port'))
 
-console.log(`Now start API server on port ${serverCfg.port} ...`)
+console.log(`Now start API server on port ${config.get('server.port')} ...`)
 
 export default app

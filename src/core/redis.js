@@ -1,8 +1,8 @@
+import config from 'config'
 import IoRedis from 'ioredis'
-import config from '../config/redis'
 import { jsonParse, jsonStringify } from '../utils/tools'
 
-const redis = new IoRedis(config)
+const redis = new IoRedis(config.get('redis'))
 
 redis.on('connect', () => {
   console.log('redis connection success.')

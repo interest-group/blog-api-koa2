@@ -23,7 +23,7 @@ npm install
 # 登录数据库
 $ mysql -uroot -p密码
 
-# 创建 boblog 数据库
+# 创建 blog 数据库
 $ CREATE DATABASE IF NOT EXISTS blog DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 

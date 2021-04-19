@@ -1,14 +1,14 @@
+import config from 'config'
 import Sequelize from 'sequelize'
 import cls from 'cls-hooked'
-import config from '../config/database'
 
-const { host, port } = config
+const { database, username, password, dialect, host, port } = config.get('dbConfig')
 
 const namespace = cls.createNamespace('sequelize-namespace')
 Sequelize.useCLS(namespace)
 
-const sequelize = new Sequelize(config.database, config.username, config.password, {
-  dialect: 'mysql',
+const sequelize = new Sequelize(database, username, password, {
+  dialect,
   host,
   port,
   logging: false,

@@ -31,7 +31,7 @@ gulp.task('nodemon', () => {
     env: {
       NODE_ENV: 'development'
     },
-    watch: ['src'],
+    watch: ['config', 'src'],
     ext: 'js json'
   })
     .on('restart', function () {

@@ -1,12 +1,14 @@
+import config from 'config'
 import jsonwebtoken from 'jsonwebtoken'
-import config from '../config/authorization'
 import { getRedis, setRedis } from './redis'
 import { timestamp } from '../utils/tools'
 
 export default class Authorization {
   // 签发
   sign ({ id, username, nickname, role }) {
-    return jsonwebtoken.sign({ id, username, nickname, role }, config.secretKey, { expiresIn: config.expiresIn })
+    return jsonwebtoken.sign({ id, username, nickname, role }, config.get('jwtConfig.secretKey'), {
+      expiresIn: config.get('jwtConfig.expiresIn')
+    })
   }
 
   // 续签 tokenValue
@@ -14,7 +16,7 @@ export default class Authorization {
     // 当前时间
     const time = timestamp()
     // 超过续签时间 且 在有效期内
-    if (time > tokenValue.iat + config.renewal && tokenValue.exp > time) {
+    if (time > tokenValue.iat + config.get('jwtConfig.renewal') && tokenValue.exp > time) {
       return this.sign(tokenValue)
     }
   }
@@ -50,7 +52,7 @@ export default class Authorization {
 
   // 保存黑名单
   async setRedisBlock (id, value) {
-    return setRedis(`block_token_${id}`, value, config.expiresIn)
+    return setRedis(`block_token_${id}`, value, config.get('jwtConfig.expiresIn'))
   }
 }
 
@@ -58,7 +60,7 @@ export default class Authorization {
 export function middlewareOptions () {
   const authorization = new Authorization()
   return {
-    secret: config.secretKey,
+    secret: config.get('jwtConfig.secretKey'),
     isRevoked: authorization.isRevoked.bind(authorization),
     passthrough: true
   }

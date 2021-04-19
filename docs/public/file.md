@@ -2,7 +2,7 @@
 ## 接口前缀
 
 ```shell
-http://localhost:5220/api/v1
+http://localhost:5220/api/public/v1
 ```
 
 # 文件
@@ -73,5 +73,28 @@ GET    /file/upload/token
         "expires": 1618819291
     },
     "message": "operation success."
+}
+```
+
+## 文件上传(客户端)
+```
+POST    https://upload-z2.qiniup.com
+```
+
+### 请求参数
+
+| 参数 | 说明 | 是否必填 |
+| ---|---|:---: |
+| file | 上传文件 | 是 |
+| token | oss令牌 | 是 |
+| key | 文件名 | false |
+
+
+### 响应数据
+
+```json
+{
+    "hash": "ImJsb2ctbm9kZSIsImRlYWRsaW",
+    "key": "ImJsb2ctbm9kZSIsImRlYWRsaW"
 }
 ```

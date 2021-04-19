@@ -2,9 +2,12 @@ import Authorization from '../core/Authorization'
 import BaseService from './BaseService'
 import UserDao from '../dao/UserDao'
 import UserProfileModel from '../models/UserProfileModel'
+import { attrs } from '../utils/tools'
 
 export default class UserService extends BaseService {
-  // 注册
+  /**
+   * 注册
+   * **/
   async register ({ nickname, username, password }) {
     return this.transaction(async () => {
       const user = await UserDao.createUser({ nickname, username, password })
@@ -14,7 +17,9 @@ export default class UserService extends BaseService {
     })
   }
 
-  // 登录
+  /**
+   * 登录
+   * **/
   async login ({ username, password }) {
     const user = await UserDao.verifyPassword(username, password)
     const userInfo = this.toUserInfo(user.get())
@@ -22,18 +27,24 @@ export default class UserService extends BaseService {
     return { userInfo, token }
   }
 
-  // 退出登录
+  /**
+   * 退出登录
+   * **/
   async logout (tokenValue) {
     // 撤销用户当前令牌
     await new Authorization().revoke(tokenValue)
   }
 
-  // 获取用户摘要
+  /**
+   * 获取用户信息
+   * **/
   async getUserInfo (id) {
     return await UserDao.getUserInfo(id)
   }
 
-  // 更新密码
+  /**
+   * 更新密码
+   * **/
   async updatePassword (tokenValue, { password, newPassword }) {
     const { id } = await UserDao.verifyPassword(tokenValue.username, password)
     await this.transaction(async () => {
@@ -43,10 +54,12 @@ export default class UserService extends BaseService {
     await new Authorization().revokeAll(tokenValue)
   }
 
-  // 裁剪字段
-  // 只保留 id, username, nickname, role
-  toUserInfo ({ id, username, nickname, role }) {
-    return { id, username, nickname, role }
+  /**
+   * 裁剪用户信息
+   * 只保留 id, username, nickname, role
+   * **/
+  toUserInfo (user) {
+    return attrs(user, ['id', 'username', 'nickname', 'role'])
   }
 
   // 签发token

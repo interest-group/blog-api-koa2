@@ -2,7 +2,7 @@
 ## 接口前缀
 
 ```shell
-http://localhost:5220/api/v1
+http://localhost:5220/api/public/v1
 ```
 
 # 用户
@@ -68,36 +68,17 @@ POST    /user/login
 }
 ```
 
-## 登出
+## 获取用户信息
 
 ```
-GET    /user/logout
-```
-
-### 请求参数
-
-- 无
-
-
-### 响应数据
-
-```json
-{
-    "status": 200,
-    "data": null,
-    "message": "operation success."
-}
-```
-
-## 用户信息
-
-```
-GET    /user/info
+GET    /user/info/:id
 ```
 
 ### 请求参数
 
-- 无
+| 参数 | 说明 | 是否必填 |
+| ---|---|:---: |
+| id | 用户id | 是 |
 
 
 ### 响应数据
@@ -112,31 +93,6 @@ GET    /user/info
         "role": 1
     },
     "message": "operation success.",
-    "uid": 5
-}
-```
-
-
-## 修改密码
-
-```
-POST    /user/update/password
-```
-
-### 请求参数
-
-| 参数 | 说明 | 是否必填 |
-| ---|---|:---: |
-| password | 原密码 | 是 |
-| newPassword | 新密码 | 是 |
-
-
-### 响应数据
-
-```json
-{
-    "status": 200,
-    "data": null,
-    "message": "operation success."
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJkZW1vIiwibmlja25hbWUiOiJmb2N1cyIsInJvbGUiOjEsImlhdCI6MTYxODY3MzQyMCwiZXhwIjoxNjE4ODQ2MjIwfQ.GXcMxvMbWQPKcP82ThaN4e3hefCAwfgEFEKRdVM2x-I"
 }
 ```

@@ -6,18 +6,33 @@ export default class BaseValidator {
     this.ctx = ctx
   }
 
-  // 检查id
+  /**
+   * params.id
+   * **/
   paramsId () {
     return this.validator(Joi.object({
       id: Joi.number().integer().min(1)
     }), this.ctx.params)
   }
 
+  // 整数
+  integer (min, isRequired) {
+    return this.required(Joi.number().integer().min(min), isRequired)
+  }
+
+  // 文本
   string (min, max, isRequired) {
-    const schema = Joi.string().min(min).max(max)
+    return this.required(Joi.string().min(min).max(max), isRequired)
+  }
+
+  // 必填项
+  required (schema, isRequired) {
     return isRequired ? schema.required() : schema
   }
 
+  /**
+   * 校验
+   * **/
   validator (schema, data) {
     const inputs = data || this.ctx.request.body
     const { value, error } = schema.validate(inputs)

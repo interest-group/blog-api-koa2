@@ -10,7 +10,7 @@ import { registerRoutes, allowedMethods } from './middleware/registerRoutes'
 import httpException from './middleware/httpException'
 import identity from './middleware/identity'
 import serverCfg from './config/server'
-import router from './routes/api'
+import router from './router'
 
 import './models/index'
 

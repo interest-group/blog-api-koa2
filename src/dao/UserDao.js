@@ -31,12 +31,11 @@ export default class UserDao extends Dao {
 
   // 获取用户信息
   static async getUserInfo (id) {
-    // const user = await UserProfileModel.findOne({ where: { id } })
-    // const info = await UserInfoModel.findOne({ where: { userId: id } })
-    // if (!user || !info) {
-    //   Dao.throwException('user not found.')
-    // }
-    // console.log(user.get())
-    // console.log(info.get())
+    const user = await UserProfileModel.findOne({ where: { id } })
+    const info = await UserInfoModel.findOne({ where: { userId: id } })
+    if (!user || !info) {
+      Dao.throwException('user not found.')
+    }
+    return Object.assign(info.get(), user.get())
   }
 }

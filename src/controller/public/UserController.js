@@ -15,9 +15,10 @@ export default class UserController extends BaseController {
   }
 
   /**
+   *
    * My method description.  Like other pieces of your comment blocks,
    * this can span multiple lines.
-   *
+
    * @param {Object} config A config object
    * @param {Function} config.callback A callback function on the config object
    * @param {Boolean} [extra=false] Do extra, optional work
@@ -41,12 +42,16 @@ export default class UserController extends BaseController {
    * @apiDescription 这是一个描述
    * @apiUrl {POST} /user/get
    * @apiParam name | String | 文章名 | 1
+   * @apiParam n2ame | String | 文章名 | 1
    * @apiQuery name | String | 文章名 | 0
    * @apiBody name | String | 文章名 | 1
    * @request params
-   *
    * {
    *  "userName": "Eve"
+   * }
+   * @request
+   * {
+   *  "www": "鹅鹅鹅"
    * }
    * @response success
    * {

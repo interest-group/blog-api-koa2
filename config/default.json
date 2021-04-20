@@ -27,7 +27,7 @@
 		"port": 3306,
 		"database": "blog",
 		"username": "root",
-		"password": ""
+		"password": "root"
 	},
 	"redis": {
 		"host": "localhost",

@@ -5,6 +5,7 @@ import UserService from '../../service/UserService'
 
 export default class UserController extends BaseController {
   // 退出登录
+
   async logout (ctx) {
     await new UserService(ctx).logout(ctx.state.user)
     ctx.state.user = null

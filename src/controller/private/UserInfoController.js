@@ -1,9 +1,9 @@
 import BaseController from '../BaseController'
 
-import UserValidator from '../../validator/UserValidator'
-import UserService from '../../service/UserService'
+import UserInfoValidator from '../../validator/UserInfoValidator'
+import UserInfoService from '../../service/UserInfoService'
 
-export default class UserController extends BaseController {
+export default class UserInfoController extends BaseController {
   /**
    * @apiName     获取当前用户信息
    * @apiGroup    {private}  user
@@ -22,14 +22,7 @@ export default class UserController extends BaseController {
    * }
    */
   async getTokenInfo (ctx) {
-    const userInfo = new UserService(ctx).toUserInfo(ctx.state.user)
-    this.success(userInfo)
-  }
-
-  // 获取用户摘要
-  async getUserInfo (ctx) {
-    const { id } = await new UserValidator(ctx).paramsId()
-    const userInfo = await new UserService(ctx).getUserInfo(id)
+    const userInfo = new UserInfoService(ctx).publicUserInfo(ctx.state.user)
     this.success(userInfo)
   }
 
@@ -45,7 +38,7 @@ export default class UserController extends BaseController {
    * }
    */
   async logout (ctx) {
-    await new UserService(ctx).logout(ctx.state.user)
+    await new UserInfoService(ctx).logout(ctx.state.user)
     ctx.state.user = null
     this.success()
   }
@@ -64,9 +57,9 @@ export default class UserController extends BaseController {
    * }
    */
   async updatePassword (ctx) {
-    const params = await new UserValidator(ctx).updatePassword()
+    const params = await new UserInfoValidator(ctx).updatePassword()
     const tokenValue = ctx.state.user
-    await new UserService(ctx).updatePassword(tokenValue, params)
+    await new UserInfoService(ctx).updatePassword(tokenValue, params)
     ctx.state.user = null
     this.success()
   }

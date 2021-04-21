@@ -1,9 +1,9 @@
 import BaseController from '../BaseController'
 
-import UserValidator from '../../validator/UserValidator'
-import UserService from '../../service/UserService'
+import UserInfoValidator from '../../validator/UserInfoValidator'
+import UserInfoService from '../../service/UserInfoService'
 
-export default class UserController extends BaseController {
+export default class UserInfoController extends BaseController {
   /**
    * @apiName     用户注册
    * @apiGroup    {public}  user
@@ -31,8 +31,8 @@ export default class UserController extends BaseController {
    * }
    */
   async register (ctx) {
-    const params = await new UserValidator(ctx).register()
-    const { userInfo, token } = await new UserService(ctx).register(params)
+    const params = await new UserInfoValidator(ctx).register()
+    const { userInfo, token } = await new UserInfoService(ctx).register(params)
     this.success(userInfo)
     ctx.state.user = null
     ctx.body.token = token
@@ -63,8 +63,8 @@ export default class UserController extends BaseController {
    * }
    */
   async login (ctx) {
-    const params = await new UserValidator(ctx).login()
-    const { userInfo, token } = await new UserService(ctx).login(params)
+    const params = await new UserInfoValidator(ctx).login()
+    const { userInfo, token } = await new UserInfoService(ctx).login(params)
     this.success(userInfo)
     ctx.state.user = null
     ctx.body.token = token
@@ -76,11 +76,35 @@ export default class UserController extends BaseController {
    * @apiUrl      {POST}    /user/info/:id
    * @apiParam    id | Number | 用户id | 1
    * @apiResponse
-   * {}
+   * {
+   *   "status": 200,
+   *   "data": {
+   *     "id": 5,
+   *     "status": 1,
+   *     "nickname": "brandon",
+   *     "username": "focus131234",
+   *     "avatar": null,
+   *     "gender": null,
+   *     "email": null,
+   *     "role": null,
+   *     "createTime": "2021-04-19T11:36:01.000Z",
+   *     "userId": 5,
+   *     "userSignature": null,
+   *     "articleCount": 0,
+   *     "commentCount": 0,
+   *     "likeCount": 0,
+   *     "followCount": 0,
+   *     "fansCount": 0,
+   *     "points": 0,
+   *     "remark": null
+   *   },
+   *   "message": "operation success.",
+   *   "uid": 2
+   * }
    */
   async getUserInfo (ctx) {
-    const { id } = await new UserValidator(ctx).paramsId()
-    const userInfo = await new UserService(ctx).getUserInfo(id)
+    const { id } = await new UserInfoValidator(ctx).id('params')
+    const userInfo = await new UserInfoService(ctx).getUserInfo(id)
     this.success(userInfo)
   }
 }

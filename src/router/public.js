@@ -17,17 +17,17 @@ export default {
     {
       method: 'post',
       path: '/user/register',
-      action: 'UserController.register'
+      action: 'UserInfoController.register'
     },
     {
       method: 'post',
       path: '/user/login',
-      action: 'UserController.login'
+      action: 'UserInfoController.login'
     },
     {
       method: 'get',
       path: '/user/info/:id',
-      action: 'UserController.getUserInfo'
+      action: 'UserInfoController.getUserInfo'
     },
     /**
      * 文件服务

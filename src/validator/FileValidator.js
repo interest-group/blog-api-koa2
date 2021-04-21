@@ -8,6 +8,6 @@ export default class FileValidator extends BaseValidator {
       file: Joi.custom((value, helpers) => {
         return (value && value.name && value.size) ? value : helpers.error('any.invalid')
       }).required()
-    }), this.ctx.request.files)
+    }), 'files')
   }
 }

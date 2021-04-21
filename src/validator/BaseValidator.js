@@ -7,22 +7,33 @@ export default class BaseValidator {
   }
 
   /**
-   * params.id
+   * 通用参数
    * **/
-  paramsId () {
+  id (name) {
     return this.validator(Joi.object({
-      id: Joi.number().integer().min(1)
-    }), this.ctx.params)
+      id: this.integer()
+    }), name)
   }
 
+  // 查 配置项列表
+  paginate (name) {
+    return this.validator(Joi.object({
+      pageIndex: this.integer(),
+      pageSize: this.integer(10)
+    }), name)
+  }
+
+  /**
+   * 语法糖
+   * **/
   // 整数
-  integer (min, isRequired) {
-    return this.required(Joi.number().integer().min(min), isRequired)
+  integer (min) {
+    return Joi.number().integer().min(min || 1).required()
   }
 
   // 文本
-  string (min, max, isRequired) {
-    return this.required(Joi.string().min(min).max(max), isRequired)
+  string (max) {
+    return Joi.string().max(max).required()
   }
 
   // 必填项
@@ -33,12 +44,27 @@ export default class BaseValidator {
   /**
    * 校验
    * **/
-  validator (schema, data) {
-    const inputs = data || this.ctx.request.body
-    const { value, error } = schema.validate(inputs)
+  // 校验方法
+  validator (schema, name, options) {
+    const inputs = this.getValidatorData(name || 'body')
+    const { value, error } = schema.validate(inputs, options)
     if (error) {
       throw new Exception({ status: 415, data: null, message: error.message })
     }
     return value
+  }
+
+  // 获取校验的参数
+  getValidatorData (name) {
+    switch (name.toLowerCase()) {
+      case 'params':
+        return this.ctx.params
+      case 'query':
+        return this.ctx.query
+      case 'files':
+        return this.ctx.request.files
+      case 'body':
+        return this.ctx.request.body
+    }
   }
 }

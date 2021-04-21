@@ -7,28 +7,38 @@ export default {
     {
       method: 'get',
       path: '/user/info',
-      action: 'UserController.getTokenInfo'
+      action: 'UserInfoController.getTokenInfo'
     },
     {
       method: 'get',
       path: '/user/logout',
-      action: 'UserController.logout'
+      action: 'UserInfoController.logout'
     },
     {
       method: 'post',
       path: '/user/password',
-      action: 'UserController.updatePassword'
+      action: 'UserInfoController.updatePassword'
     },
-    // 系统
+    // 系统 配置项
     {
       method: 'get',
       path: '/system/configuration',
-      action: 'SystemController.getConfigurationList'
+      action: 'SystemConfigurationController.getConfiguration'
+    },
+    {
+      method: 'post',
+      path: '/system/configuration',
+      action: 'SystemConfigurationController.createConfiguration'
+    },
+    {
+      method: 'post',
+      path: '/system/configuration/:id',
+      action: 'SystemConfigurationController.updateConfiguration'
     },
     {
       method: 'get',
       path: '/system/configuration/:id',
-      action: 'SystemController.getConfiguration'
+      action: 'SystemConfigurationController.getConfigurationParam'
     }
   ]
 }

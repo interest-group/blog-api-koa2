@@ -117,7 +117,31 @@ POST     /user/info/:id
 
 
 ```
-  {}
+  {
+    "status": 200,
+    "data": {
+      "id": 5,
+      "status": 1,
+      "nickname": "brandon",
+      "username": "focus131234",
+      "avatar": null,
+      "gender": null,
+      "email": null,
+      "role": null,
+      "createTime": "2021-04-19T11:36:01.000Z",
+      "userId": 5,
+      "userSignature": null,
+      "articleCount": 0,
+      "commentCount": 0,
+      "likeCount": 0,
+      "followCount": 0,
+      "fansCount": 0,
+      "points": 0,
+      "remark": null
+    },
+    "message": "operation success.",
+    "uid": 2
+  }
 ```
 
 

@@ -6,7 +6,7 @@ import BaseService from './BaseService'
 import { getRedis, setRedis } from '../core/redis'
 import { timestamp } from '../utils/tools'
 
-const uploads = path.join(__dirname, '../../resources/uploads')
+const uploads = path.join(process.cwd(), config.get('upload.folder'))
 
 export default class FileService extends BaseService {
   /**
@@ -63,13 +63,12 @@ export default class FileService extends BaseService {
   // 七牛上传
   qiniuUpload (token, fileName, filePath) {
     return new Promise((resolve, reject) => {
-      const config = new qiniu.conf.Config()
-      config.zone = qiniu.zone[config.get('qiniu.zone')]
-      const formUploader = new qiniu.form_up.FormUploader(config)
+      const conf = new qiniu.conf.Config()
+      conf.zone = qiniu.zone[config.get('qiniu.zone')]
+      const formUploader = new qiniu.form_up.FormUploader(conf)
       const putExtra = new qiniu.form_up.PutExtra()
       // 文件上传
       formUploader.putFile(token, fileName, filePath, putExtra, (error, result) => {
-        console.log(result)
         if (error) {
           return reject(error)
         }

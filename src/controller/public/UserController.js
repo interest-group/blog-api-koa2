@@ -4,8 +4,32 @@ import UserValidator from '../../validator/UserValidator'
 import UserService from '../../service/UserService'
 
 export default class UserController extends BaseController {
-  // 注册
-
+  /**
+   * @apiName     用户注册
+   * @apiGroup    {public}  user
+   * @apiUrl      {POST}    /user/register
+   * @apiBody     nickname | String | 昵称 | 1
+   * @apiBody     username | String | 账号 | 1
+   * @apiBody     password | String | 密码 | 1
+   * @apiRequest
+   * {
+   *   "nickname": "focus",
+   *   "username": "focus",
+   *   "password": "focus123"
+   * }
+   * @apiResponse
+   * {
+   *   "status": 200,
+   *   "data": {
+   *     "id": 5,
+   *     "username": "focus",
+   *     "nickname": "focus",
+   *     "role": 1
+   *   },
+   *   "message": "operation success.",
+   *   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJkZW1vIiwibmlja25hbWUiOiJmb2N1cyIsInJvbGUiOjEsImlhdCI6MTYxODY3MzIzMCwiZXhwIjoxNjE4ODQ2MDMwfQ.QKtOB8L4usa5OEa_dUK5alNlapGzY-7B7rD6PvjB-JM"
+   * }
+   */
   async register (ctx) {
     const params = await new UserValidator(ctx).register()
     const { userInfo, token } = await new UserService(ctx).register(params)
@@ -15,19 +39,29 @@ export default class UserController extends BaseController {
   }
 
   /**
-   *
-   * My method description.  Like other pieces of your comment blocks,
-   * this can span multiple lines.
-
-   * @param {Object} config A config object
-   * @param {Function} config.callback A callback function on the config object
-   * @param {Boolean} [extra=false] Do extra, optional work
-   * @example
-   * new exampleName(function(){console.log("Hello World")})
-   * @returns {Object} The constructed target object
+   * @apiName     登录
+   * @apiGroup    {public}  user
+   * @apiUrl      {POST}    /user/login
+   * @apiBody     username | String | 账号 | 1
+   * @apiBody     password | String | 密码 | 1
+   * @apiRequest
+   * {
+   *   "username": "focus",
+   *   "password": "focus123"
+   * }
+   * @apiResponse
+   * {
+   *   "status": 200,
+   *   "data": {
+   *     "id": 5,
+   *     "username": "focus",
+   *     "nickname": "focus",
+   *     "role": 1
+   *   },
+   *   "message": "operation success.",
+   *   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJkZW1vIiwibmlja25hbWUiOiJmb2N1cyIsInJvbGUiOjEsImlhdCI6MTYxODY3MzIzMCwiZXhwIjoxNjE4ODQ2MDMwfQ.QKtOB8L4usa5OEa_dUK5alNlapGzY-7B7rD6PvjB-JM"
+   * }
    */
-
-  // 登录
   async login (ctx) {
     const params = await new UserValidator(ctx).login()
     const { userInfo, token } = await new UserService(ctx).login(params)
@@ -37,30 +71,13 @@ export default class UserController extends BaseController {
   }
 
   /**
-   * @apiName 获取用户信息
-   * @apiGroup User
-   * @apiDescription 这是一个描述
-   * @apiUrl {POST} /user/get
-   * @apiParam name | String | 文章名 | 1
-   * @apiParam n2ame | String | 文章名 | 1
-   * @apiQuery name | String | 文章名 | 0
-   * @apiBody name | String | 文章名 | 1
-   * @request params
-   * {
-   *  "userName": "Eve"
-   * }
-   * @request
-   * {
-   *  "www": "鹅鹅鹅"
-   * }
-   * @response success
-   * {
-   *      "status": 200,
-   *      "data": "/resources/uploads/upload_3dadfe86a8a9e519f77545d5befa683a.jpg",
-   *      "message": "operation success."
-   * }
+   * @apiName     获取用户信息
+   * @apiGroup    {public}  user
+   * @apiUrl      {POST}    /user/info/:id
+   * @apiParam    id | Number | 用户id | 1
+   * @apiResponse
+   * {}
    */
-
   async getUserInfo (ctx) {
     const { id } = await new UserValidator(ctx).paramsId()
     const userInfo = await new UserService(ctx).getUserInfo(id)
